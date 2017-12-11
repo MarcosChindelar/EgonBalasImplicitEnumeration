@@ -3,7 +3,9 @@
  *
  * @author Marcos
  */
+
 public class EgonBalas {
+    
 
     Solucao atual;
     Solucao melhor;
@@ -28,30 +30,48 @@ public class EgonBalas {
 
         int m = atual.getDados().getM();
         int n = atual.getDados().getN();
+        
         boolean satisfeito = false;
-
+        
         for (int i = 1; i <= m; i++) {
+            
             if (atual.getS()[i] >= 0) {
                 satisfeito = true;
             } else {
+                //System.out.print("S = ");
+                //for (int a = 1; a <= m; a++){
+                  //  System.out.print(" "+atual.getS()[a]);
+                //}
+                //System.out.print("\n");
                 satisfeito = false;
                 break;
             }
         }
+       
         if (satisfeito) {
             atual.calculaZ();
         } else {
-            atual.setZ(Float.MAX_VALUE);
+            atual.setZ(100000000);
         }
         if (satisfeito) {
-            if (atual.getZ() < melhor.getZ()) {
+            
+            if (atual.getZ() <= melhor.getZ()) {
                 atualizaMelhor();
             }
             return true;
         }
-
+         
         for (int i = 1; i <= n; i++) {
-            if ((atual.getbJp()[i]) && (atual.getXp()[i] == 0) && (atual.getZ() + atual.getDados().getC()[i] < melhor.getZ())) {
+            
+            System.out.print("Z atual = "+atual.getZ()+"\n");
+            System.out.print("C atual = "+atual.getDados().getC()[i]+"\n");
+            System.out.print("Z melhor = "+melhor.getZ()+"\n");
+            System.out.print("Z atual + C = "+atual.getZ() + atual.getDados().getC()[i]+"\n");
+            if ((atual.getbJp()[i]) && 
+                    (atual.getXp()[i] == 0) 
+                    && (atual.getZ() + atual.getDados().getC()[i] < 
+                    melhor.getZ())) {
+                System.out.print(i);
                 satisfeito = false;
                 break;
             } else {
@@ -66,14 +86,16 @@ public class EgonBalas {
         for (int i = 1; i <= m; i++) {
             somatorio = 0;
             for (int j = 1; j <= n; j++) {
-                somatorio += ((atual.getbJp()[j]) && (atual.getXp()[j] == 0) ? (atual.getDados().getA()[i][j] < 0 ? atual.getDados().getA()[i][j] : 0) : 0);
+                somatorio += (((atual.getbJp()[j]) 
+                        && (atual.getXp()[j] == 0)) ? 
+                        (atual.getDados().getA()[i][j] < 0 ? 
+                        atual.getDados().getA()[i][j] : 0) : 0);
             }
             if (atual.getS()[i] - somatorio < 0) {
                 return true;
             }
-
         }
-        atual.setZ(Float.MAX_VALUE);
+        atual.setZ(100000000);
         return false;
     }
 
@@ -146,7 +168,7 @@ public class EgonBalas {
             }
         }
         int auxDlp = 0;
-        atual.setDlp((int) (-1 * Float.MAX_VALUE));
+        atual.setDlp((int) (-1 * 100000000));
         for (int i = 0; i < n; i++) {
             if (atual.getCp()[i] == 0) {
                 break;
@@ -184,39 +206,73 @@ public class EgonBalas {
             }
         }
     }
-    
-    public void Balas(){
-        
+
+    public void Balas() {
+
         boolean voltar = false;
-      
+
         atual.calculaS();
-        
-        if(criteriosDeParada()){
+
+        if (criteriosDeParada()) {
+             System.out.print("Entrou");
             return;
-        }else{
+        } else {
+            System.out.print("Entrou 2 ");
             enumerar();
             escolheCandidato();
         }
-        do{
-            if(!voltar){
+        do {
+            System.out.print("Entrou 3 ");
+            if (!voltar) {
+                
                 atual.getXp()[atual.getDlp()] = 1;
                 atual.getJp()[atual.getiJp()] = atual.getDlp();
-                atual.setiJp(atual.getiJp()+1);
+                atual.setiJp(atual.getiJp() + 1);
             }
             voltar = false;
             atual.calculaS();
-            if(criteriosDeParada()){
+            if (criteriosDeParada()) {
                 volta();
                 voltar = true;
-            }else{
+            } else {
                 enumerar();
                 escolheCandidato();
-                if(atual.getCp()[0] == 0){
+                if (atual.getCp()[0] == 0) {
                     volta();
                     voltar = true;
                 }
             }
-            
-        }while(atual.getJp()[0] != 0);
+
+        } while (atual.getJp()[0] != 0);
+    }
+
+    public void atualizar() {
+
+        int m = atual.getDados().getM();
+        int n = atual.getDados().getN();
+
+        for (int i = 1; i <= n; i++) {
+            if (atual.getY()[i] == 1) {
+                atual.getX()[i] = 1 - atual.getXp()[i];
+            } else {
+                atual.getX()[i] = atual.getXp()[i];
+            }
+        }
+
+    }
+
+    void imprime() {
+
+        //if(melhor.getZ() == 100000000){
+        //  System.out.println("O problema não tem solucao!");
+        //}else{
+        System.out.print("\nSolução: \n");
+        System.out.print("X = ");
+        for (int i = 1; i <= atual.getDados().getN(); i++) {
+            System.out.print(melhor.getX()[i] + " ");
+        }
+        System.out.print("\n");
+        System.out.print("Z = " + melhor.getZ());
+        System.out.print("\n");
     }
 }

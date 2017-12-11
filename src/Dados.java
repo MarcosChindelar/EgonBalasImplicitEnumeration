@@ -86,7 +86,7 @@ public class Dados {
         
         System.out.print("\n");
         System.out.printf("Matriz c[%d]\n",n);
-        for (int i = 1; i < c.length; i++) {
+        for (int i = 1; i < c.length -1; i++) {
             System.out.print(c[i]+"   ");
         }
         System.out.print("\n");
