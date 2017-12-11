@@ -13,8 +13,8 @@ public class Principal {
         d.leitura();
 
         Solucao s = new Solucao(d);
-        s.ajustarDados();
         Solucao s1 = new Solucao(d);
+        s.ajustarDados();
         s1.ajustarDados();
         EgonBalas eg = new EgonBalas(s,s1);
         eg.Balas();

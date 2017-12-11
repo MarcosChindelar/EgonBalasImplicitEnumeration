@@ -35,7 +35,7 @@ public class Dados {
         c = new float[n + 2];
 
         c[0] = -1;//Minimização
-        c[n + 1] = 0;
+        
         a[0][0] = 0;
         b[0] = 0;
 
@@ -54,6 +54,8 @@ public class Dados {
             }
             b[i] = Float.parseFloat(aux[n]);
         }
+        
+        c[n + 1] = 0;
         
         imprimeA();
         imprimeB();

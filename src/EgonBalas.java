@@ -3,12 +3,11 @@
  *
  * @author Marcos
  */
-
 public class EgonBalas {
-    
 
     Solucao atual;
     Solucao melhor;
+    int a = 0;
 
     EgonBalas(Solucao s, Solucao s1) {
 
@@ -30,48 +29,39 @@ public class EgonBalas {
 
         int m = atual.getDados().getM();
         int n = atual.getDados().getN();
-        
+
         boolean satisfeito = false;
-        
+
         for (int i = 1; i <= m; i++) {
-            
+
             if (atual.getS()[i] >= 0) {
                 satisfeito = true;
             } else {
-                //System.out.print("S = ");
-                //for (int a = 1; a <= m; a++){
-                  //  System.out.print(" "+atual.getS()[a]);
-                //}
-                //System.out.print("\n");
                 satisfeito = false;
                 break;
             }
         }
-       
+
         if (satisfeito) {
             atual.calculaZ();
+
         } else {
-            atual.setZ(100000000);
+            atual.setZ(Float.MAX_VALUE);
         }
         if (satisfeito) {
-            
+
             if (atual.getZ() <= melhor.getZ()) {
                 atualizaMelhor();
             }
             return true;
         }
-         
+
         for (int i = 1; i <= n; i++) {
-            
-            System.out.print("Z atual = "+atual.getZ()+"\n");
-            System.out.print("C atual = "+atual.getDados().getC()[i]+"\n");
-            System.out.print("Z melhor = "+melhor.getZ()+"\n");
-            System.out.print("Z atual + C = "+atual.getZ() + atual.getDados().getC()[i]+"\n");
-            if ((atual.getbJp()[i]) && 
-                    (atual.getXp()[i] == 0) 
-                    && (atual.getZ() + atual.getDados().getC()[i] < 
-                    melhor.getZ())) {
-                System.out.print(i);
+            if ((atual.getbJp()[i])
+                    && (atual.getXp()[i] == 0)
+                    && ((atual.getZ() + atual.getDados().getC()[i])
+                    < melhor.getZ())) {
+                System.out.print("TESTE");
                 satisfeito = false;
                 break;
             } else {
@@ -86,16 +76,16 @@ public class EgonBalas {
         for (int i = 1; i <= m; i++) {
             somatorio = 0;
             for (int j = 1; j <= n; j++) {
-                somatorio += (((atual.getbJp()[j]) 
-                        && (atual.getXp()[j] == 0)) ? 
-                        (atual.getDados().getA()[i][j] < 0 ? 
-                        atual.getDados().getA()[i][j] : 0) : 0);
+                somatorio += (((atual.getbJp()[j])
+                        && (atual.getXp()[j] == 0))
+                        ? (atual.getDados().getA()[i][j] < 0
+                        ? atual.getDados().getA()[i][j] : 0) : 0);
             }
             if (atual.getS()[i] - somatorio < 0) {
                 return true;
             }
         }
-        atual.setZ(100000000);
+        atual.setZ(Float.MAX_VALUE);
         return false;
     }
 
@@ -108,6 +98,14 @@ public class EgonBalas {
             atual.getCp()[i] = 0;
             atual.getAp()[i] = 0;
             atual.getDp()[i] = 0;
+        }
+
+        int auxAp = 0;
+        for (int i = 1; i <= n; i++) {
+            if ((atual.getbJp()[i]) && (atual.getXp()[i] == 0) && !(atual.getZ() + atual.getDados().getC()[i] < melhor.getZ())) {
+                atual.getX()[auxAp] = i;
+                auxAp = auxAp + 1;
+            }
         }
 
         boolean inserir = false;
@@ -163,19 +161,20 @@ public class EgonBalas {
             if (atual.getCp()[j] == 0) {
                 break;
             }
+            atual.getDjp()[(atual.getCp()[j]-1)] = 0;
             for (int i = 1; i <= m; i++) {
-                atual.getDjp()[(atual.getCp()[j] - 1)] = (int) (atual.getDjp()[(atual.getCp()[j] - 1)] + minimo(atual.getS()[i] - atual.getDados().getA()[i][atual.getCp()[j]]));
+                atual.getDjp()[(atual.getCp()[j] - 1)] += (int) minimo(atual.getS()[i] - atual.getDados().getA()[i][atual.getCp()[j]]);
             }
         }
         int auxDlp = 0;
-        atual.setDlp((int) (-1 * 100000000));
+        atual.setDlp(-1*Integer.MAX_VALUE);
         for (int i = 0; i < n; i++) {
             if (atual.getCp()[i] == 0) {
                 break;
             }
-            if (atual.getDjp()[atual.getCp()[i - 1]] > atual.getDlp()) {
+            if (atual.getDjp()[atual.getCp()[i]-1] > atual.getDlp()) {
                 auxDlp = atual.getCp()[i];
-                atual.setDlp(atual.getDjp()[atual.getCp()[i] - 1]);
+                atual.setDlp(atual.getDjp()[atual.getCp()[i]-1]);
             }
         }
         atual.setDlp(auxDlp);
@@ -214,7 +213,7 @@ public class EgonBalas {
         atual.calculaS();
 
         if (criteriosDeParada()) {
-             System.out.print("Entrou");
+            System.out.print("Entrou");
             return;
         } else {
             System.out.print("Entrou 2 ");
@@ -224,7 +223,7 @@ public class EgonBalas {
         do {
             System.out.print("Entrou 3 ");
             if (!voltar) {
-                
+
                 atual.getXp()[atual.getDlp()] = 1;
                 atual.getJp()[atual.getiJp()] = atual.getDlp();
                 atual.setiJp(atual.getiJp() + 1);

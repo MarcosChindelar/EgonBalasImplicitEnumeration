@@ -34,7 +34,7 @@ public class Solucao {
         Dp = new int[n];
         Cp = new int[n];
         Djp = new int[n];
-        bJp = new boolean[n + 1];
+        bJp = new boolean[n+1];
         s = new float[m + 1];
 
         for (int i = 0; i < n; i++) {
@@ -58,16 +58,16 @@ public class Solucao {
         z = 100000000;
     }
     
-    public int Xp(int i){
+    public int Xp(int aux){
         
-        return (y[i] == 1 ? 1 - Xp[i] : Xp[i]);
+        return (this.y[aux] == 1 ? 1 - this.Xp[aux] : this.Xp[aux]);
     }
     
     public void calculaZ(){
         
-        z = dados.getC()[dados.getN()+1];
+        this.z = dados.getC()[dados.getN()+1];
         for(int i = 1;i <= dados.getN(); i++){
-            z = z + dados.getC()[i] * Xp(i);
+            this.z = this.z + dados.getC()[i] * Xp(i);
         }
     }
     
