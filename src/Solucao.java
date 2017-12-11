@@ -54,8 +54,9 @@ public class Solucao {
         y[n] = 0;
         Xp[n] = 0;
         bJp[n] = true;
+        bJp[n-1] = true;
         iJp = 0;
-        z = 100000000;
+        z = Float.MAX_VALUE;
     }
     
     public int Xp(int aux){

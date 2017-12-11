@@ -29,13 +29,13 @@ public class Dados {
         aux = linha.split(" ");
         m = Integer.parseInt(aux[0]) - 1; // Descontar a linha da função objetivo.
         n = Integer.parseInt(aux[1]);
-      
+
         a = new float[m + 1][n + 1];
         b = new float[m + 1];
         c = new float[n + 2];
 
         c[0] = -1;//Minimização
-        
+
         a[0][0] = 0;
         b[0] = 0;
 
@@ -54,46 +54,46 @@ public class Dados {
             }
             b[i] = Float.parseFloat(aux[n]);
         }
-        
+
         c[n + 1] = 0;
-        
+
         imprimeA();
         imprimeB();
         imprimeC();
     }
-    
-    public void imprimeA(){
-        
-        System.out.printf("Matriz a[%d][%d] \n",m,n);
+
+    public void imprimeA() {
+
+        System.out.printf("Matriz a[%d][%d] \n", m, n);
         System.out.print(" ");
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
-                System.out.print(a[i][j]+"   ");
+                System.out.print(a[i][j] + "   ");
             }
             System.out.print("\n ");
         }
         System.out.print("\n");
     }
-    
-    public void imprimeB(){
-        
-        System.out.printf("Matriz b[%d]\n",m);
+
+    public void imprimeB() {
+
+        System.out.printf("Matriz b[%d]\n", m);
         for (int i = 1; i < b.length; i++) {
-            System.out.print(b[i]+"   ");
+            System.out.print(b[i] + "   ");
         }
         System.out.print("\n");
     }
-    
-    public void imprimeC(){
-        
+
+    public void imprimeC() {
+
         System.out.print("\n");
-        System.out.printf("Matriz c[%d]\n",n);
-        for (int i = 1; i < c.length -1; i++) {
-            System.out.print(c[i]+"   ");
+        System.out.printf("Matriz c[%d]\n", n);
+        for (int i = 1; i < c.length - 1; i++) {
+            System.out.print(c[i] + "   ");
         }
         System.out.print("\n");
     }
-    
+
     public int getN() {
         return n;
     }
