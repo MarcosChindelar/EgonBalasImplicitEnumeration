@@ -184,4 +184,39 @@ public class EgonBalas {
             }
         }
     }
+    
+    public void Balas(){
+        
+        boolean voltar = false;
+      
+        atual.calculaS();
+        
+        if(criteriosDeParada()){
+            return;
+        }else{
+            enumerar();
+            escolheCandidato();
+        }
+        do{
+            if(!voltar){
+                atual.getXp()[atual.getDlp()] = 1;
+                atual.getJp()[atual.getiJp()] = atual.getDlp();
+                atual.setiJp(atual.getiJp()+1);
+            }
+            voltar = false;
+            atual.calculaS();
+            if(criteriosDeParada()){
+                volta();
+                voltar = true;
+            }else{
+                enumerar();
+                escolheCandidato();
+                if(atual.getCp()[0] == 0){
+                    volta();
+                    voltar = true;
+                }
+            }
+            
+        }while(atual.getJp()[0] != 0);
+    }
 }
